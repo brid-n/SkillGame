@@ -1,3 +1,3 @@
 # Skill Game
 
-T!his is the first my mini game.
+My first game
