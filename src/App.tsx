@@ -1,35 +1,26 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import Navbar from "./components/Navbar";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [sidebarOpen, setSidebarOpen] = useState(true); // quản lý trạng thái sidebar
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>brid</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
+    <div className="flex">
+      <Navbar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
+      <main
+        className={`transition-all duration-300 p-8 flex-1 ${
+          sidebarOpen ? "ml-64" : "ml-16"
+        }`}
+      >
+        <h1 className="text-4xl font-bold text-gray-800">
+          Chào mừng đến với SkillGames 🎮
+        </h1>
+        <p className="mt-4 text-gray-600">
+          Học kỹ năng sống qua những mini game thú vị.
         </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+      </main>
+    </div>
+  );
 }
 
-export default App
+export default App;
