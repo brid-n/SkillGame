@@ -1,4 +1,4 @@
-import { useState } from "react";
+
 import { Home, Gamepad, Settings } from "lucide-react";
 
 interface NavbarProps {
