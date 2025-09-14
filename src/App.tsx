@@ -1,32 +1,19 @@
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "./firebase";
-import Navbar from "./components/Navbar";
-import Topbar from "./components/Topbar";
-import AuthForm from "./components/AuthForm";
-import { useState } from "react";
+import { Routes, Route } from "react-router-dom";
+import Layout from "./components/Layout";
+import Home from "./pages/Home";
+import GameMenu from "./pages/GameMenu";
+import BulletHell from "./games/BulletHell";
+import WordleGame from "./wordle/WordleGame";
 
-function App() {
-  const [user] = useAuthState(auth);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-
-  if (!user) return <AuthForm />;
-
+export default function App() {
   return (
-    <div className="flex">
-      <Navbar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
-      <div className={`flex-1 transition-all duration-300 ${sidebarOpen ? "ml-64" : "ml-16"}`}>
-        <Topbar />
-        <main className="pt-14 p-8">
-          <h1 className="text-4xl font-bold text-gray-800">
-            Xin chào {user.email} 🎉
-          </h1>
-          <p className="mt-4 text-gray-600">
-            Học kỹ năng sống qua những mini game thú vị.
-          </p>
-        </main>
-      </div>
-    </div>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<Home />} />
+        <Route path="games" element={<GameMenu />} />
+        <Route path="games/bullet-hell" element={<BulletHell />} />
+        <Route path="/games/logic-puzzle" element={<WordleGame />} />
+      </Route>
+    </Routes>
   );
 }
-
-export default App;

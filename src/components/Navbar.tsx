@@ -1,5 +1,6 @@
-
-import { Home, Gamepad, Settings } from "lucide-react";
+import { Home, Gamepad2, Settings } from "lucide-react";
+import { Link } from "react-router-dom";
+import { useState } from "react";
 
 interface NavbarProps {
   isOpen: boolean;
@@ -7,42 +8,56 @@ interface NavbarProps {
 }
 
 export default function Navbar({ isOpen, setIsOpen }: NavbarProps) {
-  const menuItems = [
-    { name: "Trang chủ", icon: <Home className="w-6 h-6" /> },
-    { name: "Trò chơi", icon: <Gamepad className="w-6 h-6" /> },
-    { name: "Cài đặt", icon: <Settings className="w-6 h-6" /> },
-  ];
+  const [openSettings, setOpenSettings] = useState(false);
 
   return (
     <div
-      className={`fixed top-0 left-0 h-screen bg-gray-900 text-white transition-all duration-300 z-40 ${
-        isOpen ? "w-64" : "w-16"
-      }`}
+      className={`fixed top-0 left-0 h-screen bg-gray-900 text-white transition-all duration-300 
+        ${isOpen ? "w-64" : "w-16"}`}
     >
+      {/* Toggle */}
       <button
+        className="p-2 m-2 rounded hover:bg-gray-700"
         onClick={() => setIsOpen(!isOpen)}
-        className="p-4 hover:bg-gray-800 w-full"
       >
-        {isOpen ? "⬅" : "➡"}
+        ☰
       </button>
 
-      <ul className="mt-4 space-y-2">
-        {menuItems.map((item) => (
-          <li
-            key={item.name}
-            className="flex items-center gap-4 px-4 py-2 hover:bg-gray-800 cursor-pointer group"
+      {/* Menu */}
+      <nav className="mt-6 space-y-2">
+        <Link
+          to="/"
+          className="flex items-center w-full px-4 py-2 hover:bg-gray-700"
+        >
+          <Home size={20} />
+          {isOpen && <span className="ml-3">Home</span>}
+        </Link>
+
+        <Link
+          to="/games"
+          className="flex items-center w-full px-4 py-2 hover:bg-gray-700"
+        >
+          <Gamepad2 size={20} />
+          {isOpen && <span className="ml-3">Games</span>}
+        </Link>
+
+        {/* Settings */}
+        <div className="relative">
+          <button
+            onClick={() => setOpenSettings(!openSettings)}
+            className="flex items-center w-full px-4 py-2 hover:bg-gray-700"
           >
-            {item.icon}
-            <span
-              className={`whitespace-nowrap transition-all duration-300 ${
-                isOpen ? "opacity-100" : "opacity-0 group-hover:opacity-100 absolute left-20 bg-gray-800 px-2 py-1 rounded"
-              }`}
-            >
-              {item.name}
-            </span>
-          </li>
-        ))}
-      </ul>
+            <Settings size={20} />
+            {isOpen && <span className="ml-3">Settings</span>}
+          </button>
+
+          {openSettings && isOpen && (
+            <div className="ml-8 mt-1 bg-gray-800 rounded shadow-lg">
+              <p className="px-4 py-2">Settings Menu (Coming soon...)</p>
+            </div>
+          )}
+        </div>
+      </nav>
     </div>
   );
 }

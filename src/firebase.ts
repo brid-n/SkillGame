@@ -1,9 +1,7 @@
-// src/firebase.js
+// src/firebase.ts
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
 
-// 🔑 Thay config này bằng thông tin của bạn trên Firebase Console
 const firebaseConfig = {
   apiKey: "AIzaSyA2AzOlzenfelZbwtIqVwwsEU-su5YCMf4",
   authDomain: "skillgame-3e268.firebaseapp.com",
@@ -15,6 +13,4 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-
 export const auth = getAuth(app);
-export const db = getFirestore(app);
