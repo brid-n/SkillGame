@@ -74,8 +74,8 @@ export default function BulletHell() {
           bullets.current.push({
             x: i * spacing + spacing / 2,
             y: -10,
-            vx: Math.sin(time / 250) * 2.5, // zigzag mạnh hơn
-            vy: 7, // nhanh hơn
+            vx: Math.sin(time / 250) * 1.5, // zigzag mạnh hơn
+            vy: 5, // nhanh hơn
             r: 6,
             color: colors[Math.floor(Math.random() * colors.length)],
           });
@@ -179,7 +179,7 @@ export default function BulletHell() {
         for (let i = 0; i < 10; i++) {
           bullets.current.push({
             x: i * 100,
-            y: -10,
+            y: 0,
             vx: 0,
             vy: 3 + Math.sin(time / 200) * 2,
             r: 6,

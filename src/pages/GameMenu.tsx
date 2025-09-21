@@ -1,45 +1,26 @@
-import { Link } from "react-router-dom";
-import { Joystick, Gamepad2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function GameMenu() {
-  const games = [
-    {
-      name: "Bullet Hell",
-      path: "/games/bullet-hell",
-      icon: <Joystick className="w-10 h-10 text-blue-500" />,
-      color: "from-blue-100 to-blue-200",
-    },
-    {
-      name: "Logic Puzzle",
-      path: "/games/logic-puzzle",
-      icon: <Gamepad2 className="w-10 h-10 text-green-500" />,
-      color: "from-green-100 to-green-200",
-    },
-    {
-      name: "Coming Soon...",
-      path: "#",
-      icon: <Gamepad2 className="w-10 h-10 text-gray-400" />,
-      color: "from-gray-100 to-gray-200",
-    },
-  ];
+  const navigate = useNavigate();
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-purple-100 to-indigo-200 px-6">
-      <h1 className="text-5xl font-extrabold text-gray-800 mb-12 drop-shadow-lg">
-        🎮 Game Menu
-      </h1>
+    <div className="flex flex-col items-center justify-center min-h-[70vh] text-center">
+      <h1 className="text-3xl font-bold mb-8 text-gray-800">🎮 Game Menu</h1>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 max-w-5xl w-full">
-        {games.map((game, i) => (
-          <Link
-            key={i}
-            to={game.path}
-            className={`p-8 rounded-2xl shadow-xl bg-gradient-to-br ${game.color} flex flex-col items-center justify-center transform hover:scale-105 transition duration-300`}
-          >
-            <div className="mb-4">{game.icon}</div>
-            <h2 className="text-xl font-semibold text-gray-800">{game.name}</h2>
-          </Link>
-        ))}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <button
+          onClick={() => navigate("/games/bullethell")}
+          className="px-8 py-6 bg-indigo-500 text-white rounded-xl shadow hover:bg-indigo-600 transition"
+        >
+          🚀 Bullet Hell
+        </button>
+
+        <button
+          onClick={() => navigate("/games/lightsout")}
+          className="px-8 py-6 bg-teal-500 text-white rounded-xl shadow hover:bg-teal-600 transition"
+        >
+          💡 Lights Out
+        </button>
       </div>
     </div>
   );
