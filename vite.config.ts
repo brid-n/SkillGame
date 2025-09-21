@@ -7,5 +7,5 @@ export default defineConfig({
   plugins: [react(),
      tailwindcss(), // 👈 thêm dòng này
   ],
-  base: '/', 
+  base: '/SkillGame', 
 })
