@@ -10,6 +10,7 @@ import Home from "./pages/Home";
 import GameMenu from "./pages/GameMenu";
 import BulletHell from "./games/BulletHell";
 import LightsOutGame from "./games/lightsout/LightsOutGame";
+import PrimeGame from "./games/prime/PrimeGame";
 
 function App() {
   const [user] = useAuthState(auth);
@@ -35,6 +36,7 @@ function App() {
             <Route path="/games" element={<GameMenu />} />
             <Route path="/games/bullethell" element={<BulletHell />} />
             <Route path="/games/lightsout" element={<LightsOutGame />} />
+            <Route path="games/prime" element={<PrimeGame />} />
           </Routes>
         </main>
       </div>

@@ -21,6 +21,12 @@ export default function GameMenu() {
         >
           💡 Lights Out
         </button>
+        <button
+          onClick={() => navigate("/games/prime")}
+          className="bg-purple-500 hover:bg-purple-400 text-white px-6 py-3 rounded-lg shadow-lg text-lg font-semibold"
+        >
+            🔢 Prime or Not
+        </button>
       </div>
     </div>
   );
