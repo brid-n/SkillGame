@@ -1,47 +1,57 @@
+import { Routes, Route } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./firebase";
-import { Routes, Route } from "react-router-dom";
+
 import Navbar from "./components/Navbar";
 import Topbar from "./components/Topbar";
 import AuthForm from "./components/AuthForm";
-import { useState } from "react";
 
-import Home from "./pages/Home";
-import GameMenu from "./pages/GameMenu";
+import HomePage from "./pages/Home";
+import MainGameMenu from "./pages/GameMenu/MainGameMenu";
+import ReflexMenu from "./pages/GameMenu/ReflexMenu";
+import LogicMenu from "./pages/GameMenu/LogicMenu";
+import MathMenu from "./pages/GameMenu/MathMenu";
+
 import BulletHell from "./games/BulletHell";
 import LightsOutGame from "./games/lightsout/LightsOutGame";
 import PrimeGame from "./games/prime/PrimeGame";
 
-function App() {
+import { useState } from "react";
+
+export default function App() {
   const [user] = useAuthState(auth);
   const [sidebarOpen, setSidebarOpen] = useState(true);
 
   if (!user) return <AuthForm />;
 
   return (
-    <div className="flex">
-      {/* Navbar bên trái */}
+    <div className="flex h-screen bg-gray-100 overflow-hidden">
+      {/* Sidebar */}
       <Navbar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
 
-      {/* Nội dung */}
+      {/* Main content */}
       <div
-        className={`flex-1 transition-all duration-300 ${
+        className={`flex-1 flex flex-col transition-all duration-300 ${
           sidebarOpen ? "ml-64" : "ml-16"
         }`}
       >
+        {/* Topbar */}
         <Topbar />
-        <main className="pt-14 p-8 min-h-screen bg-gray-50">
+
+        {/* Pages */}
+        <main className="flex-1 overflow-y-auto p-6">
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/games" element={<GameMenu />} />
-            <Route path="/games/bullethell" element={<BulletHell />} />
-            <Route path="/games/lightsout" element={<LightsOutGame />} />
-            <Route path="games/prime" element={<PrimeGame />} />
+            <Route path="/" element={<HomePage />} />
+            <Route path="/games" element={<MainGameMenu />} />
+            <Route path="/games/reflex" element={<ReflexMenu />} />
+            <Route path="/games/logic" element={<LogicMenu />} />
+            <Route path="/games/math" element={<MathMenu />} />
+            <Route path="/games/reflex/bullethell" element={<BulletHell />} />
+            <Route path="/games/logic/lightsout" element={<LightsOutGame />} />
+            <Route path="/games/math/primegame" element={<PrimeGame />} />
           </Routes>
         </main>
       </div>
     </div>
   );
 }
-
-export default App;
