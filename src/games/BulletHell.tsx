@@ -16,6 +16,7 @@ export default function BulletHell() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
+  const [warning, setWarning] = useState<string | null>(null);
   const navigate = useNavigate();
 
   // Player
@@ -26,6 +27,7 @@ export default function BulletHell() {
   const bullets = useRef<Bullet[]>([]);
   const lastSpawn = useRef(0);
   const currentPattern = useRef(0);
+  const nextPattern = useRef(Math.floor(Math.random() * 10));
   const patternStart = useRef(0);
   const waitingForClear = useRef(false);
 
@@ -59,8 +61,7 @@ export default function BulletHell() {
       return;
     }
 
-    // Spawn nhanh hơn
-    if (time - lastSpawn.current < 120) return;
+    if (time - lastSpawn.current < 200) return;
     lastSpawn.current = time;
 
     const w = ctx.canvas.width;
@@ -68,62 +69,62 @@ export default function BulletHell() {
     const colors = ["#ff4d4d", "#ffcc00", "#66ff66", "#00eaff"];
 
     switch (currentPattern.current) {
-      case 0: // Rain down
-        const spacing = 60; // dày hơn
-        for (let i = 0; i < Math.floor(w / spacing); i++) {
+      case 0: // Rain down (ngẫu nhiên, di chuyển trái phải)
+        for (let i = 0; i < 6; i++) {
+          const sway = Math.sin(time / 300 + i) * 1.5;
           bullets.current.push({
-            x: i * spacing + spacing / 2,
+            x: Math.random() * w,
             y: -10,
-            vx: Math.sin(time / 250) * 1.5, // zigzag mạnh hơn
-            vy: 5, // nhanh hơn
+            vx: sway,
+            vy: 3.5,
             r: 6,
-            color: colors[Math.floor(Math.random() * colors.length)],
+            color: "#00eaff",
           });
         }
         break;
 
       case 1: // Rise up
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i < 5; i++) {
           bullets.current.push({
             x: Math.random() * w,
             y: h + 10,
             vx: 0,
-            vy: -5,
+            vy: -3,
             r: 6,
-            color: colors[Math.floor(Math.random() * colors.length)],
+            color: "#ffcc00",
           });
         }
         break;
 
       case 2: // Left to right
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i < 5; i++) {
           bullets.current.push({
             x: -10,
             y: Math.random() * h,
-            vx: 5,
+            vx: 3,
             vy: 0,
             r: 6,
-            color: colors[Math.floor(Math.random() * colors.length)],
+            color: "#66ff66",
           });
         }
         break;
 
       case 3: // Right to left
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i < 5; i++) {
           bullets.current.push({
             x: w + 10,
             y: Math.random() * h,
-            vx: -5,
+            vx: -3,
             vy: 0,
             r: 6,
-            color: colors[Math.floor(Math.random() * colors.length)],
+            color: "#ff4d4d",
           });
         }
         break;
 
       case 4: // Circle around player
-        for (let i = 0; i < 14; i++) {
-          const angle = (i / 14) * Math.PI * 2;
+        for (let i = 0; i < 12; i++) {
+          const angle = (i / 12) * Math.PI * 2;
           bullets.current.push({
             x: player.current.x,
             y: player.current.y,
@@ -149,37 +150,34 @@ export default function BulletHell() {
         }
         break;
 
-      case 6: // Spiral
-        const angle1 = (time / 120) % (Math.PI * 2);
-        const angle2 = angle1 + Math.PI; // đối xứng
-        [angle1, angle2].forEach((a) => {
-          bullets.current.push({
-            x: w / 2,
-            y: h / 2,
-            vx: Math.cos(a) * 4,
-            vy: Math.sin(a) * 4,
-            r: 6,
-            color: "#66ff66",
-          });
+      case 6: // Spiral (tăng tốc độ xoay)
+        const angle = (time / 100) % (Math.PI * 2);
+        bullets.current.push({
+          x: w / 2,
+          y: h / 2,
+          vx: Math.cos(angle) * 3.5,
+          vy: Math.sin(angle) * 3.5,
+          r: 6,
+          color: "#66ff66",
         });
         break;
 
       case 7: // Zigzag
         bullets.current.push({
           x: -10,
-          y: Math.random() * h,
-          vx: 5,
-          vy: Math.sin(time / 150) * 3,
+          y: (Math.sin(time / 100) + 1) * h * 0.5,
+          vx: 4,
+          vy: Math.sin(time / 200) * 3,
           r: 6,
           color: "#00eaff",
         });
         break;
 
       case 8: // Wave
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 8; i++) {
           bullets.current.push({
-            x: i * 100,
-            y: 0,
+            x: i * 160,
+            y: -10,
             vx: 0,
             vy: 3 + Math.sin(time / 200) * 2,
             r: 6,
@@ -199,22 +197,22 @@ export default function BulletHell() {
             case 0:
               x = Math.random() * w;
               y = -10;
-              vy = 3.5;
+              vy = 3;
               break;
             case 1:
               x = Math.random() * w;
               y = h + 10;
-              vy = -3.5;
+              vy = -3;
               break;
             case 2:
               x = -10;
               y = Math.random() * h;
-              vx = 3.5;
+              vx = 3;
               break;
             case 3:
               x = w + 10;
               y = Math.random() * h;
-              vx = -3.5;
+              vx = -3;
               break;
           }
           bullets.current.push({
@@ -237,12 +235,16 @@ export default function BulletHell() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
     patternStart.current = performance.now();
     currentPattern.current = Math.floor(Math.random() * 10);
 
     const loop = (time: number) => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+      // Background
       const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
       gradient.addColorStop(0, "#0f2027");
       gradient.addColorStop(0.5, "#203a43");
@@ -254,7 +256,7 @@ export default function BulletHell() {
         ctx.fillStyle = "white";
         ctx.font = "40px Arial";
         ctx.textAlign = "center";
-        ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2);
+        ctx.fillText("💀 GAME OVER 💀", canvas.width / 2, canvas.height / 2);
         return;
       }
 
@@ -274,7 +276,6 @@ export default function BulletHell() {
         Math.min(canvas.height - player.current.r, player.current.y)
       );
 
-      // Spawn bullets
       spawnPattern(ctx, time);
 
       // Update bullets
@@ -290,11 +291,31 @@ export default function BulletHell() {
           b.y < canvas.height + 20
       );
 
-      // Nếu hết đạn và đang chờ clear → đổi pattern
+      // Nếu hết đạn và đang chờ clear → cảnh báo pattern mới
       if (waitingForClear.current && bullets.current.length === 0) {
-        currentPattern.current = Math.floor(Math.random() * 10);
-        patternStart.current = time;
         waitingForClear.current = false;
+
+        const patternNames = [
+          "💧 Rain Down",
+          "🔥 Rise Up",
+          "➡️ Left Wave",
+          "⬅️ Right Wave",
+          "⭕ Circle",
+          "🌟 Radial",
+          "🌀 Spiral",
+          "⚡ Zigzag",
+          "🌊 Wave",
+          "💥 Chaos",
+        ];
+
+        currentPattern.current = nextPattern.current;
+        nextPattern.current = Math.floor(Math.random() * 10);
+        setWarning(`⚠️ Incoming Pattern: ${patternNames[currentPattern.current]}`);
+
+        setTimeout(() => {
+          setWarning(null);
+          patternStart.current = performance.now();
+        }, 2000);
       }
 
       // Collision
@@ -326,10 +347,10 @@ export default function BulletHell() {
 
       requestAnimationFrame(loop);
     };
+
     requestAnimationFrame(loop);
   }, [isGameOver]);
 
-  // Fullscreen
   const toggleFullscreen = () => {
     if (!document.fullscreenElement && containerRef.current) {
       containerRef.current.requestFullscreen();
@@ -345,8 +366,15 @@ export default function BulletHell() {
       ref={containerRef}
       className="fixed inset-0 flex items-center justify-center bg-black overflow-hidden"
     >
-      {/* Canvas rộng hơn: 1280x720 */}
-      <canvas ref={canvasRef} width={2000} height={1000} className="rounded-lg" />
+      {warning && (
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
+                        text-yellow-300 text-3xl font-bold bg-black/70 px-6 py-3 rounded-xl 
+                        shadow-lg animate-pulse z-20">
+          {warning}
+        </div>
+      )}
+
+      <canvas ref={canvasRef} className="rounded-lg" />
 
       {isGameOver && (
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-black/50">
