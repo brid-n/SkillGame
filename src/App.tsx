@@ -5,6 +5,7 @@ import { auth } from "./firebase";
 import Navbar from "./components/Navbar";
 import Topbar from "./components/Topbar";
 import AuthForm from "./components/AuthForm";
+import AnalysisPage from "./pages/PhanTich";
 
 import HomePage from "./pages/Home";
 import MainGameMenu from "./pages/GameMenu/MainGameMenu";
@@ -49,6 +50,8 @@ export default function App() {
             <Route path="/games/reflex/bullethell" element={<BulletHell />} />
             <Route path="/games/logic/lightsout" element={<LightsOutGame />} />
             <Route path="/games/math/primegame" element={<PrimeGame />} />
+            <Route path="/analysis" element={<AnalysisPage />} />
+
           </Routes>
         </main>
       </div>

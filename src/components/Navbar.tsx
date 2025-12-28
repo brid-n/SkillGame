@@ -1,4 +1,4 @@
-import { Home, Gamepad2, Settings } from "lucide-react";
+import { Home, Gamepad2, Settings, BarChart3 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
@@ -39,6 +39,15 @@ export default function Navbar({ isOpen, setIsOpen }: NavbarProps) {
         >
           <Gamepad2 size={20} />
           {isOpen && <span className="ml-3">Games</span>}
+        </Link>
+
+        {/* 🔥 Mục Phân tích mới */}
+        <Link
+          to="/analysis"
+          className="flex items-center w-full px-4 py-2 hover:bg-gray-700"
+        >
+          <BarChart3 size={20} />
+          {isOpen && <span className="ml-3">Phân tích</span>}
         </Link>
 
         {/* Settings */}
